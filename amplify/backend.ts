@@ -12,7 +12,7 @@ const externalDataSourcesStack = backend.createStack("MyExternalDataSources");
 
 const externalTable = aws_dynamodb.Table.fromTableName(
   externalDataSourcesStack,
-  "MyExternalYGOTable",
+  "ExternalYGO_table",
   "YGO_table"
 );
 
