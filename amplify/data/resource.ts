@@ -17,18 +17,18 @@ const schema = a.schema({
 
   }),
   
-  // query for getting a card by its CardID
-  // getCard: a
-  //   .query()
-  //   .arguments({ CardID: a.string().required() })  
-  //   .returns(a.ref("Card"))
-  //   .authorization(allow => [allow.publicApiKey()])
-  //   .handler(
-  //     a.handler.custom({
-  //       dataSource: "YGO_table",  // References the external table data source
-  //       entry: "./getCard.js",  //  custom Lambda handler for fetching cards
-  //     })
-  //   ),
+  //query for getting a card by its CardID
+  getCard: a
+    .query()
+    .arguments({ CardID: a.string().required() })  
+    .returns(a.ref("Card"))
+    .authorization(allow => [allow.publicApiKey()])
+    .handler(
+      a.handler.custom({
+        dataSource: "YGO_table",  // References the external table data source
+        entry: "./getCard.js",  //  custom Lambda handler for fetching cards
+      })
+    ),
 });
 
 export type Schema = ClientSchema<typeof schema>;
