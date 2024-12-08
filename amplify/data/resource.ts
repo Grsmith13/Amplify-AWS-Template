@@ -1,17 +1,34 @@
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 
-/*== STEP 1 ===============================================================
-The section below creates a Todo database table with a "content" field. Try
-adding a new "isDone" field as a boolean. The authorization rule below
-specifies that any user authenticated via an API key can "create", "read",
-"update", and "delete" any "Todo" records.
-=========================================================================*/
+
+
 const schema = a.schema({
+
+
   Todo: a
-    .model({
-      content: a.string(),
-    })
-    .authorization((allow) => [allow.publicApiKey()]),
+  .model({
+    content: a.string(),
+  })
+  .authorization((allow) => [allow.publicApiKey()]),
+
+  //custom type for 'Card' that matches  DynamoDB table schema
+  Card: a.customType({
+    CardID: a.string().required(), // Adjust based on your table's schema
+
+  }),
+  
+  // query for getting a card by its CardID
+  // getCard: a
+  //   .query()
+  //   .arguments({ CardID: a.string().required() })  
+  //   .returns(a.ref("Card"))
+  //   .authorization(allow => [allow.publicApiKey()])
+  //   .handler(
+  //     a.handler.custom({
+  //       dataSource: "YGO_table",  // References the external table data source
+  //       entry: "./getCard.js",  //  custom Lambda handler for fetching cards
+  //     })
+  //   ),
 });
 
 export type Schema = ClientSchema<typeof schema>;
@@ -19,13 +36,21 @@ export type Schema = ClientSchema<typeof schema>;
 export const data = defineData({
   schema,
   authorizationModes: {
-    defaultAuthorizationMode: "apiKey",
-    // API Key is used for a.allow.public() rules
+    defaultAuthorizationMode: 'apiKey',
     apiKeyAuthorizationMode: {
       expiresInDays: 30,
     },
   },
 });
+
+/*== STEP 1 ===============================================================
+The section below creates a Todo database table with a "content" field. Try
+adding a new "isDone" field as a boolean. The authorization rule below
+specifies that any user authenticated via an API key can "create", "read",
+"update", and "delete" any "Todo" records.
+=========================================================================*/
+
+
 
 /*== STEP 2 ===============================================================
 Go to your frontend source code. From your client-side code, generate a
