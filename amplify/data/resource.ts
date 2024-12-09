@@ -12,23 +12,23 @@ const schema = a.schema({
   .authorization((allow) => [allow.publicApiKey()]),
 
   //custom type for 'Card' that matches  DynamoDB table schema
-  Card: a.customType({
-    CardID: a.string().required(), // Adjust based on your table's schema
+  // Card: a.customType({
+  //   CardID: a.string().required(), // Adjust based on your table's schema
 
-  }),
+  // }),
   
-  //query for getting a card by its CardID
-  getCard: a
-    .query()
-    .arguments({ CardID: a.string().required() })  
-    .returns(a.ref("Card"))
-    .authorization(allow => [allow.publicApiKey()])
-    .handler(
-      a.handler.custom({
-        dataSource: "YGO_table",  // References the external table data source
-        entry: "./getCard.js",  //  custom Lambda handler for fetching cards
-      })
-    ),
+  // //query for getting a card by its CardID
+  // getCard: a
+  //   .query()
+  //   .arguments({ CardID: a.string().required() })  
+  //   .returns(a.ref("Card"))
+  //   .authorization(allow => [allow.publicApiKey()])
+  //   .handler(
+  //     a.handler.custom({
+  //       dataSource: "YGO_table",  // References the external table data source
+  //       entry: "./getCard.js",  //  custom Lambda handler for fetching cards
+  //     })
+  //   ),
 });
 
 export type Schema = ClientSchema<typeof schema>;
